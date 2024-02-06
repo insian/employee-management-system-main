@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://database-1.cqrf0f1mttmf.us-east-1.rds.amazonaws.com:3306/hr
-    username: admin
-    password: admin1234
+    url: jdbc:mysql://3.92.251.22:3307/hr
+    username: root
+    password: root
 #    url: jdbc:h2:mem:testDB
 #    username: sa
 #    password: sa
