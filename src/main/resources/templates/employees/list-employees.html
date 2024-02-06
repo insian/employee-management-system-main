@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	
+	<head>
+	    <!-- Required meta tags -->
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	    <!-- Bootstrap CSS -->
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+	
+		<title>Employee Directory</title>
+		
+	</head>
+	
+	<body>
+	
+		<div class="container">
+		
+			<h3>Employee Directory</h3>
+			<hr>
+			<div class="row">
+				<div class="col-md-2 text-start">
+					<a th:href="@{/employees/showFormForAdd}" class="btn btn-primary btn-sm mb-3">
+			            Add Employee
+			        </a>
+				</div>
+				<div class="col-md-2 text-start">
+					<a th:href="@{/employees/list}" class="btn btn-primary btn-sm mb-3">
+			            Get All Employees
+			        </a>
+				</div>
+				<div class="col-md-2"></div>
+				<div class="col-md-6 text-end">
+			        <form th:action="@{/employees/findByEmail}" method="GET">
+			            <div class="input-group mb-3">
+			                <input type="text" name="email" class="form-control" placeholder="Enter Mail ID" required 
+			                	pattern="[a-zA-Z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$">
+			                <button type="submit" class="btn btn-primary outline-none"><i class="fa fa-search" aria-hidden="true"></i></button>
+			            </div>
+			        </form>
+			    </div>
+			</div>
+		
+			<table class="table table-bordered table-striped">
+				<thead class="table-dark">
+					<tr>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Email</th>
+						<th>Update</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:if="${#lists.size(employees)==0}">
+						<td class="text-center text-danger text-uppercase fs-4 fw-bold" colspan=5>No Record Found</td>
+					</tr>
+					<tr th:unless="${#lists.size(employees)==0}" th:each="tempEmployee : ${employees}">
+						<td th:text="${tempEmployee.firstName}" />	
+						<td th:text="${tempEmployee.lastName}" />	
+						<td th:text="${tempEmployee.email}" />
+						<td>
+							<a th:href="@{/employees/showFormForUpdate(employeeId=${tempEmployee.id})}"
+							   class="btn btn-info btn-sm">
+								Update
+							</a>
+						</td>
+						<td>
+							<div th:id="'delete-div'+${tempEmployee.id}">
+								<button class="btn btn-danger btn-sm" th:attr="onclick=|enableYesNo('${tempEmployee.id}')|">
+									Delete
+								</button>
+							</div>
+							<div th:id="'confirm-delete'+${tempEmployee.id}" style="display: none;">
+								<a th:href="@{/employees/delete(employeeId=${tempEmployee.id})}"
+								   class="btn btn-danger btn-sm">
+									Yes
+								</a>
+								<button th:attr="onclick=|noDelete('${tempEmployee.id}')|"
+								   class="btn btn-secondary btn-sm">
+									No
+								</button>
+							</div>
+						</td>
+					</tr>
+				</tbody>		
+			</table>
+		</div>
+		<script>
+			function enableYesNo(x){
+				document.getElementById("delete-div"+x).style.display="none";
+				document.getElementById("confirm-delete"+x).style.display = "block";
+			}
+			function noDelete(x){
+				document.getElementById("delete-div"+x).style.display="block";
+				document.getElementById("confirm-delete"+x).style.display = "none";
+			}
+		</script>
+	</body>
+</html>
+
+
+
